@@ -1,6 +1,12 @@
 # buffer-tools
 
-Two buffer commands that work around netrw and terminal buffers.
+Two buffer commands that work around netrw and terminal buffers, and files that
+keep their place:
+
+- A file reopens where the cursor was last time (the `'"` mark), except git
+  commit and rebase messages.
+- A file that leaves a window and comes back, e.g. with `:BufferAlt`, keeps its
+  view: scroll position and cursor.
 
 | Command | `<Plug>` mapping | What it does |
 | --- | --- | --- |
