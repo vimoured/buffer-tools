@@ -9,9 +9,10 @@ let g:loaded_buffer_tools = 1
 command! BufferClose call buffer_tools#close()
 command! BufferAlt call buffer_tools#alt()
 
-" <Plug> mappings; no keys are bound here (see README)
+" gb: the alternate buffer, also in netrw (after/ftplugin/netrw.vim)
+nnoremap <silent> gb <Cmd>call buffer_tools#alt()<CR>
+" <Plug> mapping for :BufferClose; no key is bound to it (see README)
 nnoremap <silent> <Plug>(buffer-tools-close) <Cmd>call buffer_tools#close()<CR>
-nnoremap <silent> <Plug>(buffer-tools-alt) <Cmd>call buffer_tools#alt()<CR>
 
 augroup buffer_tools
   autocmd!

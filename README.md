@@ -8,15 +8,14 @@ keep their place:
 - A file that leaves a window and comes back, e.g. with `:BufferAlt`, keeps its
   view: scroll position and cursor.
 
-| Command | `<Plug>` mapping | What it does |
+| Command | Mapping | What it does |
 | --- | --- | --- |
+| `:BufferAlt` | `gb` | Go to the alternate buffer (`:b#`), skipping netrw listings; falls back to the most recently used buffer. `gb` works in netrw buffers too. |
 | `:BufferClose` | `<Plug>(buffer-tools-close)` | Delete the current buffer but keep the window, showing the previous buffer. Terminal, `nofile` and netrw buffers are skipped. |
-| `:BufferAlt` | `<Plug>(buffer-tools-alt)` | Go to the alternate buffer (`:b#`), skipping netrw listings; falls back to the most recently used buffer. |
 
-No keys are bound. For example:
+For `:BufferClose`, bind a key yourself, for example:
 
 ```vim
-nmap gb <Plug>(buffer-tools-alt)
 nmap <leader>bc <Plug>(buffer-tools-close)
 ```
 
