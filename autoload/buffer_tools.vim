@@ -1,32 +1,24 @@
 " Shows the previous buffer in the window, then deletes the current one, so
-" the window stays open. Terminal, nofile and netrw buffers are never shown.
+" the window stays open.
 function! buffer_tools#close() abort
   let l:current = bufnr('%')
-  " Define what to ignore
   let l:skip_bt = ['terminal', 'nofile']
   let l:skip_ft = ['netrw']
-
-  " Get all listed buffers
   let l:all_bufs = filter(range(1, bufnr('$')), 'buflisted(v:val)')
-
-  " Filter out based on our skip variables
   let l:valid_bufs = filter(l:all_bufs,
         \ 'index(l:skip_bt, getbufvar(v:val, "&buftype")) == -1 && ' .
         \ 'index(l:skip_ft, getbufvar(v:val, "&filetype")) == -1')
 
-  " Find index and jump.
   " If current is a terminal, idx is -1, so it jumps to the last valid buffer.
   let l:idx = index(l:valid_bufs, l:current)
   let l:target_idx = (l:idx - 1 + len(l:valid_bufs)) % len(l:valid_bufs)
 
   execute 'buffer ' . l:valid_bufs[l:target_idx]
 
-  " Delete with silent! to ignore Netrw/Terminal complaints
+  " silent!: netrw and terminal buffers complain
   execute 'silent! bdelete! ' . l:current
 endfunction
 
-" Switch to the alternate buffer, skipping netrw listings. If # is a netrw
-" buffer (or missing), fall back to the most recently used other buffer.
 function! s:is_netrw(nr) abort
   return getbufvar(a:nr, '&filetype') ==# 'netrw'
         \ || !empty(getbufvar(a:nr, 'netrw_curdir'))
