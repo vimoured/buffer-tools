@@ -1,11 +1,6 @@
 " buffer-tools: close a buffer without closing its window, and switch to the
 " alternate buffer, skipping netrw and terminal buffers. Files keep their
 " cursor position and view.
-if exists('g:loaded_buffer_tools')
-  finish
-endif
-let g:loaded_buffer_tools = 1
-
 command! BufferClose call buffer_tools#close()
 command! BufferAlt call buffer_tools#alt()
 
