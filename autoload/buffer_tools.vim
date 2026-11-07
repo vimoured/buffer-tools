@@ -28,6 +28,7 @@ endfunction
 
 function! s:is_alt_candidate(nr) abort
   return a:nr > 0 && a:nr != bufnr('%') && bufexists(a:nr) && !s:is_netrw(a:nr)
+        \ && getbufvar(a:nr, '&buftype') !=# 'terminal'
 endfunction
 
 function! buffer_tools#alt() abort
