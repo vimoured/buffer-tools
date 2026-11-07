@@ -10,7 +10,7 @@ keep their place:
 
 | Command | Mapping | What it does |
 | --- | --- | --- |
-| `:BufferAlt` | `gb` | Go to the alternate buffer (`:b#`), skipping netrw listings; falls back to the most recently used buffer. `gb` works in netrw buffers too. |
+| `:BufferAlt` | `gb` | Go to the alternate buffer (`:b#`), skipping netrw listings and terminal buffers; falls back to the most recently used buffer. `gb` works in netrw buffers too. |
 | `:BufferClose` | `<Plug>(buffer-tools-close)` | Delete the current buffer but keep the window, showing the previous buffer. Terminal, `nofile` and netrw buffers are skipped. |
 
 For `:BufferClose`, bind a key yourself, for example:
@@ -23,4 +23,10 @@ nmap <leader>bc <Plug>(buffer-tools-close)
 
 ```vim
 Plug 'roumail/buffer-tools'
+```
+
+## Tests
+
+```sh
+vim -Nu NONE -i NONE -Es -S test/run.vim
 ```
