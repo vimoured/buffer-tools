@@ -11,7 +11,11 @@ keep their place:
 | Command | Mapping | What it does |
 | --- | --- | --- |
 | `:BufferAlt` | `gb` | Go to the alternate buffer (`:b#`), skipping netrw listings and terminal buffers; falls back to the most recently used buffer, or says `No alternate buffer` when there is none. `gb` works in netrw buffers too. |
-| `:BufferClose` | `<Plug>(buffer-tools-close)` | Delete the current buffer but keep the window, showing the most recently used other buffer; terminal, `nofile` and netrw buffers are skipped. With none left to show, the window shows an empty buffer. Unsaved changes are never lost. |
+| `:BufferClose` | `<Plug>(buffer-tools-close)` | Delete the current buffer but keep the window, showing the most recently used other buffer (*not yet*: it shows the previous buffer by number); terminal, `nofile` and netrw buffers are skipped. With none left to show, the window shows an empty buffer (*not yet* when only terminal, `nofile` or netrw buffers are left: it raises E684). Unsaved changes are never lost (*not yet*: they're discarded). |
+
+*Not yet* marks a known bug: [vim-suite](https://github.com/vimoured/vim-suite)
+asserts the behaviour described (its `test/known-failures.txt`), and the note
+goes once it's fixed.
 
 For `:BufferClose`, bind a key yourself, for example:
 
