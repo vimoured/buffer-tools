@@ -15,7 +15,7 @@ function! buffer_tools#close() abort
   if empty(l:bufs)
     hide enew
   else
-    execute 'buffer ' . s:last_used(l:bufs)
+    execute 'hide buffer ' . s:last_used(l:bufs)
   endif
 
   " silent!: netrw and terminal buffers complain
