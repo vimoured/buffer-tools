@@ -1,19 +1,22 @@
-" Shows the previous buffer in the window, then deletes the current one, so
-" the window stays open.
+function! s:last_used(bufs) abort
+  return sort(a:bufs, {a, b -> b.lastused - a.lastused})[0].bufnr
+endfunction
+
 function! buffer_tools#close() abort
+  if &buftype ==# '' && &modified
+    echo bufname('%') . ' has unsaved changes'
+    return
+  endif
   let l:current = bufnr('%')
-  let l:skip_bt = ['terminal', 'nofile']
-  let l:skip_ft = ['netrw']
-  let l:all_bufs = filter(range(1, bufnr('$')), 'buflisted(v:val)')
-  let l:valid_bufs = filter(l:all_bufs,
-        \ 'index(l:skip_bt, getbufvar(v:val, "&buftype")) == -1 && ' .
-        \ 'index(l:skip_ft, getbufvar(v:val, "&filetype")) == -1')
-
-  " If current is a terminal, idx is -1, so it jumps to the last valid buffer.
-  let l:idx = index(l:valid_bufs, l:current)
-  let l:target_idx = (l:idx - 1 + len(l:valid_bufs)) % len(l:valid_bufs)
-
-  execute 'buffer ' . l:valid_bufs[l:target_idx]
+  let l:bufs = filter(getbufinfo({'buflisted': 1}),
+        \ 'v:val.bufnr != l:current'
+        \ . ' && index(["terminal", "nofile"], getbufvar(v:val.bufnr, "&buftype")) == -1'
+        \ . ' && getbufvar(v:val.bufnr, "&filetype") !=# "netrw"')
+  if empty(l:bufs)
+    hide enew
+  else
+    execute 'buffer ' . s:last_used(l:bufs)
+  endif
 
   " silent!: netrw and terminal buffers complain
   execute 'silent! bdelete! ' . l:current
@@ -40,7 +43,7 @@ function! buffer_tools#alt() abort
       echo 'No alternate buffer'
       return
     endif
-    let l:target = sort(l:bufs, {a, b -> b.lastused - a.lastused})[0].bufnr
+    let l:target = s:last_used(l:bufs)
   endif
   execute 'buffer ' . l:target
 endfunction

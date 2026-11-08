@@ -1,27 +1,11 @@
 # buffer-tools
 
-Two buffer commands that work around netrw and terminal buffers, and files that
-keep their place:
+Switch and close buffers without tripping over netrw and terminal buffers, and
+keep each file's place: files reopen where the cursor was, and keep their view
+when they leave a window and come back.
 
-- A file reopens where the cursor was last time (the `'"` mark), except git
-  commit and rebase messages.
-- A file that leaves a window and comes back, e.g. with `:BufferAlt`, keeps its
-  view: scroll position and cursor.
-
-| Command | Mapping | What it does |
-| --- | --- | --- |
-| `:BufferAlt` | `gb` | Go to the alternate buffer (`:b#`), skipping netrw listings and terminal buffers; falls back to the most recently used buffer, or says `No alternate buffer` when there is none. `gb` works in netrw buffers too. |
-| `:BufferClose` | `<Plug>(buffer-tools-close)` | Delete the current buffer but keep the window, showing the most recently used other buffer (*not yet*: it shows the previous buffer by number); terminal, `nofile` and netrw buffers are skipped. With none left to show, the window shows an empty buffer (*not yet* when only terminal, `nofile` or netrw buffers are left: it raises E684). Unsaved changes are never lost (*not yet*: they're discarded). |
-
-*Not yet* marks a known bug: [vim-suite](https://github.com/vimoured/vim-suite)
-asserts the behaviour described (its `test/known-failures.txt`), and the note
-goes once it's fixed.
-
-For `:BufferClose`, bind a key yourself, for example:
-
-```vim
-nmap <leader>bc <Plug>(buffer-tools-close)
-```
+**Vim or Neovim:** tested on Vim 9.1 and newer. It's plain Vimscript, so it may
+work on Neovim, but that's untested.
 
 ## Install
 
@@ -29,8 +13,20 @@ nmap <leader>bc <Plug>(buffer-tools-close)
 Plug 'vimoured/buffer-tools'
 ```
 
+## Use
+
+| Command | Mapping | What it does |
+| --- | --- | --- |
+| `:BufferAlt` | `gb` | Go to the alternate buffer, skipping netrw and terminal buffers; else the most recently used buffer. |
+| `:BufferClose` | `<Plug>(buffer-tools-close)` | Delete the current buffer and keep the window, showing the most recently used other buffer. Refuses while a file has unsaved changes. |
+
+`gb` is bound for you. Bind `:BufferClose` yourself, for example:
+
+```vim
+nmap <leader>bc <Plug>(buffer-tools-close)
+```
+
 ## Tests
 
-Tested by [vim-suite](https://github.com/vimoured/vim-suite), in
-`test/buffer-tools.vim`, with the dotfiles that use it. Every pull request runs
-it.
+The specs in [vim-suite](https://github.com/vimoured/vim-suite) define what it
+does: `test/buffer-tools.vim`.
