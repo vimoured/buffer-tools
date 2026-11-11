@@ -17,8 +17,11 @@ augroup buffer_tools
   autocmd BufWinEnter * if &buftype ==# '' && exists('b:buffer_tools_view')
         \ | call winrestview(b:buffer_tools_view) | endif
   " Reopen a file where the cursor was last time ('" mark), except git commit
-  " and rebase messages, which are new each time
-  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line('$')
+  " and rebase messages, which are new each time.
+  " Only real files on disk: a name with a scheme (fugitive://, scp://) is a
+  " generated view, and a position from an earlier view of it means nothing
+  autocmd BufReadPost * if expand('<afile>') !~# '^\a\a\+://'
+        \ && line("'\"") > 1 && line("'\"") <= line('$')
         \ && &filetype !~# '^git\%(commit\|rebase\)$'
         \ | execute 'normal! g`"' | endif
 augroup END
